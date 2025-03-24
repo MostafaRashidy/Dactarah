@@ -1,9 +1,9 @@
-import { createServer } from "http";
-import { parse } from "querystring";
+const { createServer } = require("http");
+const { parse } = require("querystring");
 
-export default (req, res) => {
+module.exports = (req, res) => {
     req.query = parse(req.url.split("?")[1]);
     return createServer((req, res) => {
-        import("../public/index.php");
+        require("../public/index.php");
     }).emit("request", req, res);
 };
