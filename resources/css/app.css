@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+        direction: rtl;
+    }
+}
+
+@layer components {
+    .btn-primary {
+        @apply inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150;
+    }
+
+    .card {
+        @apply bg-white overflow-hidden shadow-sm sm:rounded-lg;
+    }
+
+    .card-header {
+        @apply p-6 bg-white border-b border-gray-200;
+    }
+
+    .card-body {
+        @apply p-6;
+    }
+
+    .form-input {
+        @apply border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm;
+    }
+
+    .form-label {
+        @apply block font-medium text-sm text-gray-700;
+    }
+}
+
+/* Admin Dashboard Specific Styles */
+.stats-card {
+    @apply bg-white rounded-lg shadow-sm p-6 transition-all duration-200 hover:shadow-md;
+}
+
+.stats-number {
+    @apply text-3xl font-bold text-indigo-600;
+}
+
+.stats-label {
+    @apply text-gray-600 mt-1;
+}
+
+.stats-icon {
+    @apply text-indigo-500 text-3xl;
+}
+
+.table-container {
+    @apply overflow-x-auto bg-white rounded-lg shadow;
+}
+
+.admin-table {
+    @apply min-w-full divide-y divide-gray-200;
+}
+
+.admin-table th {
+    @apply px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider;
+}
+
+.admin-table td {
+    @apply px-6 py-4 whitespace-nowrap text-sm text-gray-900;
+}
+
+.action-button {
+    @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm transition-colors duration-200;
+}
+
+.action-button-approve {
+    @apply bg-green-100 text-green-700 hover:bg-green-200;
+}
+
+.action-button-reject {
+    @apply bg-red-100 text-red-700 hover:bg-red-200;
+}

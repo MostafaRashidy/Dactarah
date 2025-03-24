@@ -1,0 +1,284 @@
+/* =====================================IN COMMON================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;800;1000&family=Rakkas&display=swap');
+
+* {
+    font-family: 'Cairo', sans-serif;
+    margin: 0;
+    scroll-behavior: smooth;
+    user-select: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    direction: rtl;
+    /* Right-to-left text direction for Arabic */
+    background: linear-gradient(to right, #FAFAFA, #C7EEFF);
+    /* Gradient background color */
+}
+
+nav {
+    background: none;
+    /* Remove background color */
+    color: 333;
+    margin: 1%;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: inherit;
+    padding-top: 3px;
+    display: flex;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+nav li {
+    display: inline;
+    padding-right: 30px;
+}
+
+#nav_home {
+    display: block;
+    width: 74px;
+    /* Adjust the width to fit your logo */
+    height: 74px;
+    /* Adjust the height to fit your logo */
+    background-size: contain;
+    margin-right: 3%;
+    margin-top: 0%;
+}
+
+nav a {
+    text-decoration: none;
+    color: #1D242B;
+    padding: 10px;
+    transition: color 0.7s;
+    /* Smooth transition for font color change */
+}
+
+.home-page {
+    text-align: right;
+    padding: 50px;
+}
+
+
+/* =====================================UNIQUE================================================== */
+.card_container {
+    margin-top: -50px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.card {
+    position: relative;
+    margin-top: 75px;
+    margin-right: 75px;
+    margin-left: 75px;
+    width: 1350px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    background: white;
+    box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.15);
+}
+
+.card__avatar {
+    width: 175px;
+    height: 175px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 85px;
+    margin-left: 1000px;
+    box-shadow: 0 15px 35px -15px rgba(0, 0, 0, 0.5),
+        0 5px 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+.card__avatar img {
+    border-radius: 100%;
+    margin-bottom: 5px;
+    width: 175px;
+    height: 175px;
+}
+
+.card__title {
+    margin-top: -120px;
+    margin-left: 600px;
+    font-weight: bold;
+    font-size: 18px;
+    color: var(--main-color);
+}
+
+.card__subtitle {
+    margin-left: 600px;
+}
+
+.card__description {
+    max-width: 300px;
+    /* Adjust the maximum width as needed */
+    margin-top: -130px;
+    /* Center the text horizontally */
+    text-align: center;
+    /* Center the description */
+    word-wrap: break-word;
+    /* Allow long words to break and wrap onto the next line */
+    white-space: normal;
+    /* Allow multiple lines */
+}
+
+.price {
+    position: absolute;
+    top: 225px;
+    right: 660px;
+    font-size: 30px;
+}
+
+img {
+    margin-top: 6.5px;
+    width: 30px;
+    height: 30px;
+}
+
+.location {
+    position: absolute;
+    top: 80px;
+    right: 1000px;
+}
+
+
+
+
+
+
+h5 {
+    margin-right: 57px;
+}
+
+
+
+
+
+
+.card__btn {
+    position: absolute;
+    top: 275px;
+    right: 575px;
+    height: 45px;
+    width: 200px;
+    border-radius: 10px;
+    border: 0px;
+    cursor: pointer;
+    background-color: #0077C0;
+    color: #F9F5F6;
+    transition: 0.5s;
+    text-transform: uppercase;
+    transition: all 0.7s;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.card__btn:hover {
+    background-color: rgb(162, 14, 14);
+    transform: scale(0.97);
+}
+
+
+
+
+
+#backToTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #0077C0;
+    color: #F9F5F6;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.7s, color 0.7s;
+}
+
+#backToTopBtn:hover {
+    background-color: rgb(162, 14, 14);
+    transform: scale(0.97);
+}
+
+
+
+
+.search-container {
+    display: flex;
+    margin-top: 30px;
+    margin-left: 80px;
+}
+
+.search-container input[type="text"] {
+    padding: 8px;
+    border: none;
+    border-radius: 0px 15px 15px 0px;
+    font-size: 16px;
+}
+
+.search-container button {
+    padding: 8px;
+    background: #0077C0;
+    color: #fff;
+    border: none;
+    border-radius: 15px 0px 0px 15px;
+    cursor: pointer;
+}
+
+
+#filter {
+    margin-left: 100px;
+}
+
+
+
+.static-rating-container {
+    text-align: center;
+    position: absolute;
+    top: 200px;
+    right: 280px;
+    width: 200px;
+    align-items: center;
+}
+
+.rating {
+    display: flex;
+    font-size: 24px;
+    color: #f3d63a;
+    /* Star color */
+    text-align: center;
+    max-width: fit-content;
+}
+
+.rating i {
+    display: inline-block;
+    width: 2em;
+    overflow: hidden;
+    letter-spacing: 0.1em;
+    /* Adjust this value for consistent spacing */
+}
+
+.rating .fa-star-half-alt {
+    position: relative;
+    margin-left: -0.6em;
+    /* Adjust this value to control the filled portion */
+    color: #f3d63a;
+    /* Star color */
+    transform: rotateY(180deg);
+    /* Flip the half-star horizontally */
+}
