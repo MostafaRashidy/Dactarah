@@ -92,6 +92,14 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         try {
+            // Check if the user exists
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'المستخدم غير موجود'
+                ], 404);
+            }
+
             $user->delete();
 
             return response()->json([
@@ -99,9 +107,12 @@ class UserController extends Controller
                 'message' => 'تم حذف المستخدم بنجاح'
             ]);
         } catch (\Exception $e) {
+            \Log::error('User deletion error: ' . $e->getMessage());
+
             return response()->json([
                 'success' => false,
-                'message' => 'حدث خطأ أثناء الحذف'
+                'message' => 'حدث خطأ أثناء الحذف',
+                'error' => $e->getMessage()
             ], 500);
         }
     }
@@ -109,19 +120,26 @@ class UserController extends Controller
     public function bulkDelete(Request $request)
     {
         $validated = $request->validate([
-            'users' => 'required|array',
+            'users' => 'required|array|min:1',
             'users.*' => 'exists:users,id'
         ]);
 
-        // Prevent deleting the current authenticated user
-        $currentUserId = auth()->id();
-        $userIds = array_diff($request->users, [$currentUserId]);
+        try {
+            $deletedCount = User::whereIn('id', $validated['users'])->delete();
 
-        $deletedCount = User::whereIn('id', $userIds)->delete();
+            return response()->json([
+                'success' => true,
+                'message' => "تم حذف {$deletedCount} مستخدم بنجاح",
+                'deleted_count' => $deletedCount
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Bulk user deletion error: ' . $e->getMessage());
 
-        return response()->json([
-            'message' => "تم حذف {$deletedCount} مستخدم",
-            'deleted_count' => $deletedCount
-        ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء الحذف',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

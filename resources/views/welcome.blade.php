@@ -1,9 +1,10 @@
 @php
-use Illuminate\Support\Facades\Auth;
+    use Illuminate\Support\Facades\Auth;
 @endphp
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="rtl">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +12,8 @@ use Illuminate\Support\Facades\Auth;
     <title>دكترة - منصة الأطباء الأولى</title>
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- AOS Animation -->
@@ -131,18 +133,39 @@ use Illuminate\Support\Facades\Auth;
 
         /* Advanced Animations */
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.8; }
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
         }
 
         @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
+            0% {
+                background-position: -1000px 0;
+            }
+
+            100% {
+                background-position: 1000px 0;
+            }
         }
 
         .animate-float {
@@ -154,7 +177,7 @@ use Illuminate\Support\Facades\Auth;
         }
 
         .shimmer {
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             background-size: 1000px 100%;
             animation: shimmer 2s infinite linear;
         }
@@ -211,105 +234,103 @@ use Illuminate\Support\Facades\Auth;
         }
     </style>
 </head>
+
 <body class="antialiased bg-gray-50">
     <!-- Floating Navigation -->
-<nav class="floating-nav fixed w-full z-50 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex items-center">
-                <a href="{{ url('/') }}" class="flex items-center">
-                    <span class="text-2xl font-bold gradient-text">دكترة</span>
-                </a>
-            </div>
+    <nav class="floating-nav fixed w-full z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{{ url('/') }}" class="flex items-center">
+                        <span class="text-2xl font-bold gradient-text">دكترة</span>
+                    </a>
+                </div>
 
-            <div class="flex items-center space-x-4">
-                <!-- Common Link for All Users -->
-                <a href="{{ route('doctors.index') }}"
-                    class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                    <i class="fas fa-search ml-1"></i>
-                    ابحث عن طبيب
-                </a>
+                <div class="flex items-center space-x-4">
+                    <!-- Common Link for All Users -->
+                    <a href="{{ route('doctors.index') }}"
+                        class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                        <i class="fas fa-search ml-1"></i>
+                        ابحث عن طبيب
+                    </a>
 
-                @auth('admin')
-                    <!-- Admin Navigation -->
-                    <a href="{{ route('admin.dashboard') }}"
-                        class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
-                        <i class="fas fa-dashboard ml-1"></i>
-                        لوحة التحكم
-                    </a>
-                    <a href="{{ route('admin.doctors.index') }}"
-                        class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
-                        <i class="fas fa-user-md ml-1"></i>
-                        إدارة الأطباء
-                    </a>
-                    <form method="POST" action="{{ route('admin.logout') }}" class="inline">
-                        @csrf
-                        <button type="submit"
-                            class="bg-red-500 text-white hover:bg-red-600 px-4 py-2 rounded-lg text-sm font-medium">
-                            تسجيل الخروج
-                        </button>
-                    </form>
-
-                @elseif(Auth::guard('doctor')->check())
-                    <!-- Doctor Navigation -->
-                    <a href="{{ route('doctor.dashboard') }}"
-                        class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
-                        <i class="fas fa-dashboard ml-1"></i>
-                        لوحة التحكم
-                    </a>
-                    <a href="{{ route('doctor.profile.edit') }}"
-                        class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
-                        <i class="fas fa-user-circle ml-1"></i>
-                        الملف الشخصي
-                    </a>
-                    <form method="POST" action="{{ route('doctor.logout') }}" class="inline">
-                        @csrf
-                        <button type="submit"
-                            class="bg-red-500 text-white hover:bg-red-600 px-4 py-2 rounded-lg text-sm font-medium">
-                            تسجيل الخروج
-                        </button>
-                    </form>
-
-                @elseif(Auth::check())
-                    <!-- Regular User Navigation -->
-                    <a href="{{ route('dashboard') }}"
-                        class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
-                        <i class="fas fa-dashboard ml-1"></i>
-                        لوحة التحكم
-                    </a>
-                    <a href="{{ route('profile.edit') }}"
-                        class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
-                        <i class="fas fa-user-circle ml-1"></i>
-                        الملف الشخصي
-                    </a>
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit"
-                            class="bg-red-500 text-white hover:bg-red-600 px-4 py-2 rounded-lg text-sm font-medium">
-                            تسجيل الخروج
-                        </button>
-                    </form>
-
-                @else
-                    <!-- Guest Navigation -->
-                    <a href="{{ route('login') }}"
-                        class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
-                        تسجيل الدخول
-                    </a>
-                    <a href="{{ route('doctor.login') }}"
-                        class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
-                        <i class="fas fa-user-md ml-1"></i>
-                        دخول الأطباء
-                    </a>
-                    <a href="{{ route('register') }}"
-                        class="bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 rounded-lg text-sm font-medium">
-                        حساب جديد
-                    </a>
-                @endauth
+                    @auth('admin')
+                        <!-- Admin Navigation -->
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-dashboard ml-1"></i>
+                            لوحة التحكم
+                        </a>
+                        <a href="{{ route('admin.doctors.index') }}"
+                            class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-user-md ml-1"></i>
+                            إدارة الأطباء
+                        </a>
+                        <form method="POST" action="{{ route('admin.logout') }}" class="inline">
+                            @csrf
+                            <button type="submit"
+                                class="bg-red-500 text-white hover:bg-red-600 px-4 py-2 rounded-lg text-sm font-medium">
+                                تسجيل الخروج
+                            </button>
+                        </form>
+                    @elseif(Auth::guard('doctor')->check())
+                        <!-- Doctor Navigation -->
+                        <a href="{{ route('doctor.dashboard') }}"
+                            class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-dashboard ml-1"></i>
+                            لوحة التحكم
+                        </a>
+                        <a href="{{ route('doctor.profile.edit') }}"
+                            class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-user-circle ml-1"></i>
+                            الملف الشخصي
+                        </a>
+                        <form method="POST" action="{{ route('doctor.logout') }}" class="inline">
+                            @csrf
+                            <button type="submit"
+                                class="bg-red-500 text-white hover:bg-red-600 px-4 py-2 rounded-lg text-sm font-medium">
+                                تسجيل الخروج
+                            </button>
+                        </form>
+                    @elseif(Auth::check())
+                        <!-- Regular User Navigation -->
+                        <a href="{{ route('dashboard') }}"
+                            class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-dashboard ml-1"></i>
+                            لوحة التحكم
+                        </a>
+                        <a href="{{ route('profile.edit') }}"
+                            class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-user-circle ml-1"></i>
+                            الملف الشخصي
+                        </a>
+                        <form method="POST" action="{{ route('logout') }}" class="inline">
+                            @csrf
+                            <button type="submit"
+                                class="bg-red-500 text-white hover:bg-red-600 px-4 py-2 rounded-lg text-sm font-medium">
+                                تسجيل الخروج
+                            </button>
+                        </form>
+                    @else
+                        <!-- Guest Navigation -->
+                        <a href="{{ route('login') }}"
+                            class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+                            تسجيل الدخول
+                        </a>
+                        <a href="{{ route('doctor.login') }}"
+                            class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-user-md ml-1"></i>
+                            دخول الأطباء
+                        </a>
+                        <a href="{{ route('register') }}"
+                            class="bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 rounded-lg text-sm font-medium">
+                            حساب جديد
+                        </a>
+                    @endauth
+                </div>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
     <!-- Hero Section -->
     <div class="relative overflow-hidden bg-white hero-pattern">
@@ -324,16 +345,17 @@ use Illuminate\Support\Facades\Auth;
                                 <span class="block gradient-text mt-2">دكترة الطبية</span>
                             </h1>
                             <p class="mt-6 text-base text-gray-500 sm:text-lg max-w-xl leading-relaxed">
-                                انضم إلى أكبر شبكة أطباء في المنطقة. نوفر لك منصة متكاملة لإدارة عيادتك والوصول إلى المزيد من المرضى.
+                                انضم إلى أكبر شبكة أطباء في المنطقة. نوفر لك منصة متكاملة لإدارة عيادتك والوصول إلى
+                                المزيد من المرضى.
                             </p>
                             <div class="mt-8 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
                                 <a href="{{ route('doctors.create') }}"
-                                class="btn-primary px-8 py-4 rounded-xl text-white font-bold text-lg inline-flex items-center justify-center">
+                                    class="btn-primary px-8 py-4 rounded-xl text-white font-bold text-lg inline-flex items-center justify-center">
                                     <i class="fas fa-user-md ml-2"></i>
                                     انضم كطبيب
                                 </a>
                                 <a href="{{ route('doctors.index') }}"
-                                class="px-8 py-4 rounded-xl text-indigo-700 bg-indigo-50 hover:bg-indigo-100 font-bold text-lg inline-flex items-center justify-center transition-colors duration-200">
+                                    class="px-8 py-4 rounded-xl text-indigo-700 bg-indigo-50 hover:bg-indigo-100 font-bold text-lg inline-flex items-center justify-center transition-colors duration-200">
                                     <i class="fas fa-search ml-2"></i>
                                     ابحث عن طبيب
                                 </a>
@@ -342,8 +364,7 @@ use Illuminate\Support\Facades\Auth;
 
                         <!-- Hero Image -->
                         <div class="lg:w-1/2 mt-10 lg:mt-0">
-                            <img src="{{ asset('images/private/1.png') }}"
-                                alt="Doctor with patient"
+                            <img src="{{ asset('images/private/1.png') }}" alt="Doctor with patient"
                                 class="rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-300"
                                 style="clip-path: polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%);">
                         </div>
@@ -450,7 +471,7 @@ use Illuminate\Support\Facades\Auth;
             <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0">
                 <div class="inline-flex rounded-md shadow">
                     <a href="{{ route('doctors.create') }}"
-                    class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 md:py-4 md:text-lg md:px-10">
+                        class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 md:py-4 md:text-lg md:px-10">
                         ابدأ الآن
                     </a>
                 </div>
@@ -474,12 +495,12 @@ use Illuminate\Support\Facades\Auth;
                     </h3>
                     <ul class="mt-4 space-y-4">
                         <li>
-                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                            <a href="{{ route('about') }}" class="text-base text-gray-300 hover:text-white">
                                 عن دكترة
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                            <a href="{{ route('contact') }}" class="text-base text-gray-300 hover:text-white">
                                 تواصل معنا
                             </a>
                         </li>
@@ -491,79 +512,80 @@ use Illuminate\Support\Facades\Auth;
                     </h3>
                     <div class="flex justify-start space-x-6 rtl:space-x-reverse">
                         <a href="#"
-                        class="social-link text-gray-400 hover:text-white transform hover:scale-110 transition-all duration-300 p-3">
+                            class="social-link text-gray-400 hover:text-white transform hover:scale-110 transition-all duration-300 p-3">
                             <i class="fab fa-facebook text-2xl"></i>
                         </a>
                         <a href="#"
-                        class="social-link text-gray-400 hover:text-white transform hover:scale-110 transition-all duration-300 p-3">
+                            class="social-link text-gray-400 hover:text-white transform hover:scale-110 transition-all duration-300 p-3">
                             <i class="fab fa-twitter text-2xl"></i>
                         </a>
                         <a href="#"
-                        class="social-link text-gray-400 hover:text-white transform hover:scale-110 transition-all duration-300 p-3">
+                            class="social-link text-gray-400 hover:text-white transform hover:scale-110 transition-all duration-300 p-3">
                             <i class="fab fa-instagram text-2xl"></i>
                         </a>
                     </div>
                 </div>
 
-<!-- Add these styles to your existing style section -->
-<style>
-        .social-links-container {
-        padding: 1.5rem;
-        border-radius: 0.75rem;
-        transition: all 0.3s ease;
-    }
+                <!-- Add these styles to your existing style section -->
+                <style>
+                    .social-links-container {
+                        padding: 1.5rem;
+                        border-radius: 0.75rem;
+                        transition: all 0.3s ease;
+                    }
 
-    .social-link {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 3rem;
-        height: 3rem;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.1);
-        transition: all 0.3s ease;
-    }
+                    .social-link {
+                        position: relative;
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 3rem;
+                        height: 3rem;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, 0.1);
+                        transition: all 0.3s ease;
+                    }
 
-    .social-link:hover {
-        background: rgba(255, 255, 255, 0.2);
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
+                    .social-link:hover {
+                        background: rgba(255, 255, 255, 0.2);
+                        transform: translateY(-3px);
+                        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+                    }
 
-    .social-link::after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        border: 2px solid transparent;
-        transition: all 0.3s ease;
-    }
+                    .social-link::after {
+                        content: '';
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 50%;
+                        border: 2px solid transparent;
+                        transition: all 0.3s ease;
+                    }
 
-    .social-link:hover::after {
-        border-color: rgba(255, 255, 255, 0.2);
-        transform: scale(1.1);
-    }
+                    .social-link:hover::after {
+                        border-color: rgba(255, 255, 255, 0.2);
+                        transform: scale(1.1);
+                    }
 
-    .social-link:hover .fa-facebook {
-        color: #1877f2;
-    }
+                    .social-link:hover .fa-facebook {
+                        color: #1877f2;
+                    }
 
-    .social-link:hover .fa-twitter {
-        color: #1da1f2;
-    }
+                    .social-link:hover .fa-twitter {
+                        color: #1da1f2;
+                    }
 
-    .social-link:hover .fa-instagram {
-        color: #e4405f;
-    }
-</style>
-            <div class="mt-8 border-t border-gray-700 pt-8 md:flex md:items-center md:justify-between">
-                <p class="mt-8 text-base text-gray-400 md:mt-0">
-                    &copy; {{ date('Y') }} دكترة. جميع الحقوق محفوظة.
-                </p>
+                    .social-link:hover .fa-instagram {
+                        color: #e4405f;
+                    }
+                </style>
+                <div class="mt-8 border-t border-gray-700 pt-8 md:flex md:items-center md:justify-between">
+                    <p class="mt-8 text-base text-gray-400 md:mt-0">
+                        &copy; {{ date('Y') }} دكترة. جميع الحقوق محفوظة.
+                    </p>
+                </div>
             </div>
-        </div>
     </footer>
 </body>
+
 </html>

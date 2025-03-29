@@ -106,23 +106,50 @@ class AdminDoctorController extends Controller
         return view('admin.doctors.show', compact('doctor'));
     }
 
-    public function updateStatus(Request $request, Doctor $doctor)
-    {
-        $validated = $request->validate([
-            'status' => 'required|in:active,inactive,rejected',
-            'rejection_reason' => 'required_if:status,rejected|nullable|string|max:255',
-        ]);
+    // In AdminDoctorController
+// In AdminDoctorController
+public function updateStatus(Request $request, Doctor $doctor)
+{
+    $validated = $request->validate([
+        'status' => 'required|in:active,inactive,rejected'
+    ]);
 
+    try {
+        if ($validated['status'] === 'rejected') {
+            // Delete the doctor if status is rejected
+            if ($doctor->image && file_exists(public_path($doctor->image))) {
+                unlink(public_path($doctor->image));
+            }
+
+            $doctor->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'تم رفض وحذف الطبيب بنجاح',
+                'redirect' => route('admin.doctors.pending')
+            ]);
+        }
+
+        // For other statuses, update as before
         $doctor->update([
-            'status' => $validated['status'],
-            'rejection_reason' => $validated['rejection_reason'] ?? null,
+            'status' => $validated['status']
         ]);
 
         return response()->json([
             'success' => true,
-            'message' => 'تم تحديث حالة الطبيب بنجاح'
+            'message' => match($validated['status']) {
+                'active' => 'تم تفعيل الطبيب بنجاح',
+                'inactive' => 'تم إيقاف الطبيب مؤقتًا',
+                default => 'تم تحديث حالة الطبيب'
+            }
         ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'حدث خطأ أثناء معالجة الطلب'
+        ], 500);
     }
+}
 
     public function approve(Doctor $doctor)
     {
@@ -134,20 +161,36 @@ class AdminDoctorController extends Controller
     }
 
     public function reject(Request $request, Doctor $doctor)
-    {
-        $validated = $request->validate([
-            'rejection_reason' => 'required|string|max:255'
-        ]);
+{
+    // Validate the request
+    $validated = $request->validate([
+        'rejection_reason' => 'required|string|max:500'
+    ]);
 
+    try {
+        // Update doctor status to rejected
         $doctor->update([
             'status' => 'rejected',
             'rejection_reason' => $validated['rejection_reason']
         ]);
 
-        return redirect()
-            ->route('admin.doctors.pending')
-            ->with('success', 'تم رفض الطبيب بنجاح');
+        // Return success response
+        return response()->json([
+            'success' => true,
+            'message' => 'تم رفض الطبيب بنجاح'
+        ]);
+    } catch (\Exception $e) {
+        // Log the error
+        \Log::error('Doctor rejection error: ' . $e->getMessage());
+
+        // Return error response
+        return response()->json([
+            'success' => false,
+            'message' => 'حدث خطأ أثناء رفض الطبيب',
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
 
     public function destroy(Doctor $doctor)
     {

@@ -371,10 +371,7 @@ function appointmentSystem() {
         selectedSlot: null,
         today: new Date().toISOString().split('T')[0],
         isAuthenticated: {{
-            auth()->guard('web')->check() ||
-            auth()->guard('doctor')->check() ||
-            auth()->guard('admin')->check()
-            ? 'true' : 'false'
+            auth()->guard('web')->check() ? 'true' : 'false'
         }},
 
         async fetchTimeSlots() {
@@ -412,18 +409,42 @@ function appointmentSystem() {
             return '{{ $doctor->id }}';
         },
 
-        selectSlot(slot) {
-            // Authentication check across different guards
-            if (!this.checkAuthentication()) {
-                return;
+        checkAuthentication() {
+            // Check if the authenticated user is an admin or doctor
+            const authenticatedUserTypes = {
+                doctor: {{ auth()->guard('doctor')->check() ? 'true' : 'false' }},
+                admin: {{ auth()->guard('admin')->check() ? 'true' : 'false' }}
+            };
+
+            // Custom blocking messages
+            const blockingMessages = {
+                doctor: 'لا يمكن للطبيب حجز المواعيد',
+                admin: 'لا يمكن للمشرف حجز المواعيد'
+            };
+
+            // If the user is a doctor, show an error message
+            if (authenticatedUserTypes.doctor) {
+                Swal.fire({
+                    title: 'تنبيه',
+                    text: blockingMessages.doctor,
+                    icon: 'warning',
+                    confirmButtonText: 'موافق'
+                });
+                return false;
             }
 
-            this.slots.forEach(s => s.selected = false);
-            slot.selected = true;
-            this.selectedSlot = slot;
-        },
+            // If the user is an admin, show an error message
+            if (authenticatedUserTypes.admin) {
+                Swal.fire({
+                    title: 'تنبيه',
+                    text: blockingMessages.admin,
+                    icon: 'warning',
+                    confirmButtonText: 'موافق'
+                });
+                return false;
+            }
 
-        checkAuthentication() {
+            // If not authenticated as a patient, prompt to log in
             if (!this.isAuthenticated) {
                 Swal.fire({
                     title: 'تنبيه',
@@ -439,11 +460,23 @@ function appointmentSystem() {
                 });
                 return false;
             }
+
             return true;
         },
 
+        selectSlot(slot) {
+            // First check authentication and user type
+            if (!this.checkAuthentication()) {
+                return;
+            }
+
+            this.slots.forEach(s => s.selected = false);
+            slot.selected = true;
+            this.selectedSlot = slot;
+        },
+
         async confirmBooking() {
-            // Verify authentication
+            // Verify authentication and user type
             if (!this.checkAuthentication()) {
                 return;
             }
@@ -457,15 +490,6 @@ function appointmentSystem() {
                 });
                 return;
             }
-
-            // Determine the current authenticated user's type
-            const authenticatedUserTypes = {
-                web: {{ auth()->guard('web')->check() ? 'true' : 'false' }},
-                doctor: {{ auth()->guard('doctor')->check() ? 'true' : 'false' }},
-                admin: {{ auth()->guard('admin')->check() ? 'true' : 'false' }}
-            };
-
-            const authenticatedUserType = Object.keys(authenticatedUserTypes).find(type => authenticatedUserTypes[type]);
 
             // Booking confirmation dialog
             const result = await Swal.fire({
@@ -482,7 +506,7 @@ function appointmentSystem() {
                             id="appointment-phone"
                             placeholder="رقم الهاتف"
                             class="w-full mt-4 p-2 border rounded-lg"
-                            value="${this.getUserPhone(authenticatedUserType)}"
+                            value="${this.getUserPhone()}"
                         />
 
                         <textarea
@@ -514,8 +538,7 @@ function appointmentSystem() {
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Accept': 'application/json',
-                            'X-Authenticated-User-Type': authenticatedUserType
+                            'Accept': 'application/json'
                         },
                         body: JSON.stringify({
                             doctor_id: '{{ $doctor->id }}',
@@ -551,18 +574,9 @@ function appointmentSystem() {
             }
         },
 
-        // Method to get user phone based on authenticated user type
-        getUserPhone(userType) {
-            switch(userType) {
-                case 'web':
-                    return '{{ auth()->guard('web')->check() ? auth()->guard('web')->user()->phone : '' }}';
-                case 'doctor':
-                    return '{{ auth()->guard('doctor')->check() ? auth()->guard('doctor')->user()->phone : '' }}';
-                case 'admin':
-                    return '{{ auth()->guard('admin')->check() ? auth()->guard('admin')->user()->phone : '' }}';
-                default:
-                    return '';
-            }
+        // Method to get user phone for patients
+        getUserPhone() {
+            return '{{ auth()->guard('web')->check() ? auth()->guard('web')->user()->phone : '' }}';
         }
     }
 }

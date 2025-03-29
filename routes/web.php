@@ -17,9 +17,13 @@ use App\Http\Controllers\Doctor\DoctorSettingsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Appointment;
+use App\Http\Controllers\PageController;
 
 
 Route::view('/', 'welcome')->name('home');
+Route::get('/about', [PageController::class, 'about'])->name('about');
+Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::post('/contact', [PageController::class, 'submitContact'])->name('contact.submit');
 
 // Doctor Auth Routes (Move these BEFORE the general doctor routes)
 Route::middleware('guest:doctor')->group(function () {

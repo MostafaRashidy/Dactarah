@@ -201,87 +201,82 @@
         });
 
         async function rateDoctor(doctorId, appointmentId) {
-            const { value: formValues } = await Swal.fire({
-                title: 'تقييم الطبيب',
-                html: `
-                    <div class="text-right mb-4">
-                        <div class="mb-3">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">التقييم</label>
-                            <div class="flex flex-row-reverse justify-center gap-2 rating-stars" dir="ltr">
-                                <input type="radio" name="rating" value="5" class="hidden peer/5" id="star5">
-                                <label for="star5" class="cursor-pointer text-2xl text-gray-300 hover:text-yellow-400">★</label>
+    const { value: formValues } = await Swal.fire({
+        title: 'تقييم الطبيب',
+        html: `
+            <div class="text-right mb-4">
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">التقييم</label>
+                    <div class="flex flex-row-reverse justify-center gap-2 rating-stars" dir="ltr">
+                        <input type="radio" name="rating" value="5" class="hidden peer/5" id="star5">
+                        <label for="star5" class="cursor-pointer text-2xl text-gray-300 hover:text-yellow-400">★</label>
 
-                                <input type="radio" name="rating" value="4" class="hidden peer/4" id="star4">
-                                <label for="star4" class="cursor-pointer text-2xl text-gray-300 hover:text-yellow-400">★</label>
+                        <input type="radio" name="rating" value="4" class="hidden peer/4" id="star4">
+                        <label for="star4" class="cursor-pointer text-2xl text-gray-300 hover:text-yellow-400">★</label>
 
-                                <input type="radio" name="rating" value="3" class="hidden peer/3" id="star3">
-                                <label for="star3" class="cursor-pointer text-2xl text-gray-300 hover:text-yellow-400">★</label>
+                        <input type="radio" name="rating" value="3" class="hidden peer/3" id="star3">
+                        <label for="star3" class="cursor-pointer text-2xl text-gray-300 hover:text-yellow-400">★</label>
 
-                                <input type="radio" name="rating" value="2" class="hidden peer/2" id="star2">
-                                <label for="star2" class="cursor-pointer text-2xl text-gray-300 hover:text-yellow-400">★</label>
+                        <input type="radio" name="rating" value="2" class="hidden peer/2" id="star2">
+                        <label for="star2" class="cursor-pointer text-2xl text-gray-300 hover:text-yellow-400">★</label>
 
-                                <input type="radio" name="rating" value="1" class="hidden peer/1" id="star1">
-                                <label for="star1" class="cursor-pointer text-2xl text-gray-300 hover:text-yellow-400">★</label>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">تعليقك (اختياري)</label>
-                            <textarea id="review" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" rows="3"></textarea>
-                        </div>
+                        <input type="radio" name="rating" value="1" class="hidden peer/1" id="star1">
+                        <label for="star1" class="cursor-pointer text-2xl text-gray-300 hover:text-yellow-400">★</label>
                     </div>
-                `,
-                showCancelButton: true,
-                confirmButtonText: 'إرسال التقييم',
-                cancelButtonText: 'إلغاء',
-                preConfirm: () => {
-                    const rating = document.querySelector('input[name="rating"]:checked')?.value;
-                    const review = document.getElementById('review').value;
+                </div>
+            </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'إرسال التقييم',
+        cancelButtonText: 'إلغاء',
+        preConfirm: () => {
+            const rating = document.querySelector('input[name="rating"]:checked')?.value;
 
-                    if (!rating) {
-                        Swal.showValidationMessage('يرجى اختيار التقييم');
-                        return false;
-                    }
+            if (!rating) {
+                Swal.showValidationMessage('يرجى اختيار التقييم');
+                return false;
+            }
 
-                    return { rating, review };
-                }
+            return { rating };
+        }
+    });
+
+    if (formValues) {
+        try {
+            const url = "{{ route('appointments.rate', ':id') }}".replace(':id', appointmentId);
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify(formValues)
             });
 
-            if (formValues) {
-                try {
-                    const url = "{{ route('appointments.rate', ':id') }}".replace(':id', appointmentId);
+            const data = await response.json();
 
-                    const response = await fetch(url, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify(formValues)
-                    });
-
-                    const data = await response.json();
-
-                    if (response.ok) {
-                        await Swal.fire({
-                            title: 'تم',
-                            text: 'تم إضافة تقييمك بنجاح',
-                            icon: 'success'
-                        });
-                        window.location.reload();
-                    } else {
-                        throw new Error(data.message || 'حدث خطأ أثناء إضافة التقييم');
-                    }
-                } catch (error) {
-                    console.error('Rating error:', error);
-                    Swal.fire({
-                        title: 'خطأ',
-                        text: error.message || 'حدث خطأ أثناء إضافة التقييم',
-                        icon: 'error'
-                    });
-                }
+            if (response.ok) {
+                await Swal.fire({
+                    title: 'تم',
+                    text: 'تم إضافة تقييمك بنجاح',
+                    icon: 'success'
+                });
+                window.location.reload();
+            } else {
+                throw new Error(data.message || 'حدث خطأ أثناء إضافة التقييم');
             }
+        } catch (error) {
+            console.error('Rating error:', error);
+            Swal.fire({
+                title: 'خطأ',
+                text: error.message || 'حدث خطأ أثناء إضافة التقييم',
+                icon: 'error'
+            });
         }
+    }
+}
 
         async function cancelAppointment(appointmentId) {
             const result = await Swal.fire({

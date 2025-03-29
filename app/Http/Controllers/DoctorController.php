@@ -115,25 +115,24 @@ class DoctorController extends Controller
     {
         $specialties = Specialty::all();
         $governorates = Governorate::all();
-        return view('doctors.create', compact('specialties','governorates'));
+        return view('doctors.create', compact('specialties', 'governorates'));
     }
 
-    // Handle doctor registration
     public function store(Request $request)
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:doctors,email',
+            'login_email' => 'required|email|unique:doctors,email',
+            'communication_email' => 'required|email|different:login_email',
             'password' => 'required|min:8',
             'phone' => 'required|regex:/^01[0-2]\d{8}$/|unique:doctors,phone',
             'price' => 'required|numeric|min:0',
             'description' => 'required|string|max:150',
-            'usr_img' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'usr_img' => 'required|image|mimes:jpeg,png,jpg|max:5048',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'specialty_id' => 'required|exists:specialties,id',
-            'communication_email' => 'nullable|email',
             'governorate_id' => 'required|exists:governorates,id',
         ], $this->messages());
 
@@ -151,7 +150,8 @@ class DoctorController extends Controller
             $doctor = Doctor::create([
                 'first_name' => $validated['first_name'],
                 'last_name' => $validated['last_name'],
-                'email' => $validated['email'],
+                'email' => $validated['login_email'],
+                'communication_email' => $validated['communication_email'],
                 'password' => Hash::make($validated['password']),
                 'phone' => $validated['phone'],
                 'price' => $validated['price'],
@@ -160,13 +160,12 @@ class DoctorController extends Controller
                 'latitude' => $validated['latitude'],
                 'longitude' => $validated['longitude'],
                 'specialty_id' => $validated['specialty_id'],
+                'governorate_id' => $validated['governorate_id'],
                 'status' => 'pending',
             ]);
 
             Log::info('New doctor registered', ['doctor_id' => $doctor->id]);
-
             return redirect()->route('doctors.registration.success');
-
         } catch (\Exception $e) {
             // Clean up uploaded image if exists
             if (isset($imagePath) && file_exists(public_path($imagePath))) {
@@ -184,6 +183,7 @@ class DoctorController extends Controller
         }
     }
 
+
     // Doctor profile edit (authenticated doctors only)
     public function editProfile()
     {
@@ -200,7 +200,8 @@ class DoctorController extends Controller
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:doctors,email,' . $doctor->id,
+            'login_email' => 'required|email|unique:doctors,email',
+            'communication_email' => 'nullable|email',
             'phone' => 'required|regex:/^01[0-2]\d{8}$/|unique:doctors,phone,' . $doctor->id,
             'price' => 'required|numeric|min:0',
             'description' => 'required|string|max:150',
@@ -249,9 +250,12 @@ class DoctorController extends Controller
         return [
             'first_name.required' => 'الاسم الأول مطلوب',
             'last_name.required' => 'الاسم الأخير مطلوب',
-            'email.required' => 'البريد الإلكتروني مطلوب',
-            'email.email' => 'يرجى إدخال بريد إلكتروني صحيح',
-            'email.unique' => 'البريد الإلكتروني مستخدم بالفعل',
+            'login_email.required' => 'بريد الدخول الإلكتروني مطلوب',
+            'login_email.email' => 'بريد الدخول يجب أن يكون صحيحاً',
+            'login_email.unique' => 'بريد الدخول مستخدم بالفعل',
+            'communication_email.required' => 'بريد التواصل الإلكتروني مطلوب',
+            'communication_email.email' => 'بريد التواصل يجب أن يكون صحيحاً',
+            'communication_email.different' => 'بريد التواصل يجب أن يختلف عن بريد الدخول',
             'password.required' => 'كلمة المرور مطلوبة',
             'password.min' => 'كلمة المرور يجب أن تكون 8 أحرف على الأقل',
             'phone.required' => 'رقم الهاتف مطلوب',
@@ -270,6 +274,8 @@ class DoctorController extends Controller
             'longitude.required' => 'يرجى تحديد موقع العيادة',
             'specialty_id.required' => 'التخصص مطلوب',
             'specialty_id.exists' => 'التخصص غير موجود',
+            'governorate_id.required' => 'المحافظة مطلوبة',
+            'governorate_id.exists' => 'المحافظة غير موجودة',
         ];
     }
 
