@@ -392,13 +392,8 @@
                 </div>
 
 
-                <div class="grid grid-cols-3 gap-3 mb-4 opacity-100 group-hover:opacity-100
+                <div class="grid grid-cols-2 gap-3 mb-4 opacity-100 group-hover:opacity-100
                             transition-all duration-300">
-                    <div class="bg-gray-100 rounded-lg p-3 text-center transition-all duration-300
-                                group-hover:bg-indigo-50 group-hover:scale-105">
-                        <div class="text-indigo-600 font-bold">{{ $doctor->experience_years }}+</div>
-                        <div class="text-xs text-gray-600">سنوات الخبرة</div>
-                    </div>
                     <div class="bg-gray-100 rounded-lg p-3 text-center transition-all duration-300
                                 group-hover:bg-indigo-50 group-hover:scale-105">
                         <div class="text-indigo-600 font-bold">{{ $doctor->total_patients }}+</div>

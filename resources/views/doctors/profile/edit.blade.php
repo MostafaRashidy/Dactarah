@@ -100,6 +100,38 @@
                         <x-input-error class="mt-2" :messages="$errors->get('phone')" />
                     </div>
 
+                    <!-- Communication Email -->
+                    <div>
+                        <x-input-label for="communication_email" value="البريد الإلكتروني للتواصل" />
+                        <x-text-input id="communication_email" name="communication_email" type="email" class="mt-1 block w-full"
+                                     :value="old('communication_email', auth('doctor')->user()->communication_email)" />
+                        <x-input-error class="mt-2" :messages="$errors->get('communication_email')" />
+                    </div>
+
+                    <!-- Governorate -->
+                    <div>
+                        <x-input-label for="governorate_id" value="المحافظة" />
+                        <select id="governorate_id" name="governorate_id"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm
+                                       focus:border-indigo-500 focus:ring-indigo-500">
+                            @foreach($governorates as $governorate)
+                                <option value="{{ $governorate->id }}"
+                                        {{ old('governorate_id', auth('doctor')->user()->governorate_id) == $governorate->id ? 'selected' : '' }}>
+                                    {{ $governorate->name_ar }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <x-input-error class="mt-2" :messages="$errors->get('governorate_id')" />
+                    </div>
+
+                    <!-- Experience Years -->
+                    <div>
+                        {{-- <x-input-label for="experience_years" value="سنوات الخبرة" />
+                        <x-text-input id="experience_years" name="experience_years" type="number" class="mt-1 block w-full"
+                                     :value="old('experience_years', auth('doctor')->user()->experience_years)" min="0" />
+                        <x-input-error class="mt-2" :messages="$errors->get('experience_years')" /> --}}
+                    </div>
+
                     <!-- Specialty -->
                     <div>
                         <x-input-label for="specialty_id" value="التخصص" />
@@ -201,11 +233,14 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
 <style>
     #map {
-        height: 300px;
+        height: 400px;
+        width: 100%;
         border-radius: 0.5rem;
-        margin-top: 0.5rem;
+        margin-top: 1rem;
+        z-index: 1;
     }
 
+    .profile-image-container {
         position: relative;
         cursor: pointer;
         transition: all 0.3s ease;

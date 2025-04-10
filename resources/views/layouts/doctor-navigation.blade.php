@@ -17,7 +17,7 @@
                 <div class="hidden sm:mr-10 sm:flex">
                     <div class="flex items-center">
                         <x-nav-link :href="route('doctor.dashboard')" :active="request()->routeIs('doctor.dashboard')"
-                                class="ml-8"> <!-- Add margin to create space -->
+                                class="ml-8">
                             <div class="flex items-center">
                                 <i class="fas fa-chart-line ml-2"></i>
                                 لوحة التحكم
@@ -25,11 +25,16 @@
                         </x-nav-link>
 
                         <x-nav-link href="{{ route('doctor.appointments') }}" :active="request()->routeIs('doctor.appointments')"
-                                class="ml-8"> <!-- Add margin to create space -->
+                                class="ml-8 relative"> <!-- Added relative positioning -->
                             <div class="flex items-center">
                                 <i class="fas fa-calendar-alt ml-2"></i>
                                 المواعيد
                             </div>
+                            @if($pendingAppointmentsCount > 0)
+                                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                                    {{ $pendingAppointmentsCount }}
+                                </span>
+                            @endif
                         </x-nav-link>
 
                         <x-nav-link href="{{ route('doctor.schedule')}}" :active="request()->routeIs('doctor.schedule')"

@@ -27,7 +27,7 @@
                 <!-- Right Side - Login Form -->
                 <div class="p-12 flex flex-col justify-center">
                     <h2 class="text-3xl font-bold text-gray-900 text-center mb-8">
-                        تسجيل الدخول
+                        تسجيل الدخول للمشرف
                     </h2>
 
                     <form method="POST" action="{{ route('admin.login') }}" class="space-y-6">

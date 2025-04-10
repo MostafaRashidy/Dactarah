@@ -40,8 +40,8 @@
                     </div>
                     <div class="stat-card">
                         <div class="bg-indigo-50 text-indigo-600 px-6 py-3 rounded-full flex items-center">
-                            <i class="fas fa-user-md ml-2"></i>
-                            <span>{{ $doctor->experience_years }} سنة خبرة</span>
+                            <i class="fas fa-users ml-2"></i>
+                            <span>{{ $doctor->total_patients }}+ مريض</span>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -62,25 +62,25 @@
         </div>
 
         <!-- Main Content Grid -->
-        <div class="grid md:grid-cols-3 gap-8 mt-12">
-            <!-- Left Column -->
-            <div class="space-y-8">
+        <div class="grid lg:grid-cols-3 gap-8 mt-12">
+            <!-- Left Column: Contact & Location -->
+            <div class="lg:col-span-1 space-y-6">
                 <!-- Contact Card -->
-                <div class="card-hover bg-white shadow-lg rounded-3xl p-6">
+                <div class="card-hover bg-white shadow-lg rounded-3xl p-6 transform transition-all duration-300">
                     <h2 class="text-2xl font-bold text-indigo-600 mb-6 flex items-center">
-                        <i class="fas fa-address-card ml-2"></i>
+                        <i class="fas fa-address-card ml-3 text-xl"></i>
                         معلومات التواصل
                     </h2>
                     <div class="space-y-4">
-                        <a href="tel:{{ $doctor->phone }}" class="contact-button">
+                        <a href="tel:{{ $doctor->phone }}" class="contact-button group">
                             <div class="flex items-center gap-3 w-full">
-                                <i class="fas fa-phone text-indigo-500"></i>
+                                <i class="fas fa-phone text-indigo-500 group-hover:scale-110 transition-transform"></i>
                                 <span class="flex-1">{{ $doctor->phone }}</span>
                             </div>
                         </a>
-                        <a href="mailto:{{ $doctor->communication_email }}" class="contact-button">
+                        <a href="mailto:{{ $doctor->communication_email }}" class="contact-button group">
                             <div class="flex items-center gap-3 w-full">
-                                <i class="fas fa-envelope text-indigo-500"></i>
+                                <i class="fas fa-envelope text-indigo-500 group-hover:scale-110 transition-transform"></i>
                                 <span class="flex-1">{{ $doctor->communication_email }}</span>
                             </div>
                         </a>
@@ -90,48 +90,25 @@
                 <!-- Location Card -->
                 <div class="card-hover bg-white shadow-lg rounded-3xl p-6">
                     <h2 class="text-2xl font-bold text-indigo-600 mb-6 flex items-center">
-                        <i class="fas fa-map-marker-alt ml-2"></i>
+                        <i class="fas fa-map-marker-alt ml-3 text-xl"></i>
                         موقع العيادة
                     </h2>
-                    <!-- Location Information -->
-                    <div class="mt-4 bg-gray-50 p-3 rounded-xl flex items-center mb-3">
+                    <div class="mt-4 bg-gray-50 hover:bg-indigo-50 transition-colors duration-300 p-4 rounded-xl flex items-center mb-4">
                         <i class="fas fa-map-marker-alt text-indigo-500 ml-3"></i>
                         <span class="text-gray-700">
                             {{ $doctor->governorate ? $doctor->governorate->name_ar : 'المحافظة غير محددة' }}
                         </span>
                     </div>
-                    <div id="map" class="h-64 rounded-xl"></div>
+                    <div id="map" class="h-64 rounded-xl shadow-inner"></div>
                 </div>
             </div>
 
-            <!-- Middle Column -->
-            <div class="space-y-8">
-                <!-- Experience Card -->
-                <div class="card-hover bg-white shadow-lg rounded-3xl p-6">
-                    <h2 class="text-2xl font-bold text-indigo-600 mb-6 flex items-center">
-                        <i class="fas fa-briefcase ml-2"></i>
-                        الخبرة المهنية
-                    </h2>
-                    <div class="space-y-4">
-                        <div class="stat-row">
-                            <span class="text-gray-600">سنوات الخبرة</span>
-                            <div class="bg-indigo-500 text-white px-4 py-2 rounded-full">
-                                {{ $doctor->experience_years }} سنة
-                            </div>
-                        </div>
-                        <div class="stat-row">
-                            <span class="text-gray-600">عدد المرضى</span>
-                            <div class="bg-green-500 text-white px-4 py-2 rounded-full">
-                                {{ $doctor->total_patients }}+
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+            <!-- Middle Column: Booking -->
+            <div class="lg:col-span-1 space-y-6">
                 <!-- Availability Card -->
                 <div class="card-hover bg-white shadow-lg rounded-3xl p-6" x-data="appointmentSystem()">
                     <h2 class="text-2xl font-bold text-indigo-600 mb-6 flex items-center">
-                        <i class="fas fa-calendar-alt ml-2"></i>
+                        <i class="fas fa-calendar-alt ml-3 text-xl"></i>
                         حجز موعد
                     </h2>
 
@@ -216,12 +193,12 @@
                 </div>
             </div>
 
-            <!-- Right Column -->
-            <div class="space-y-8">
+            <!-- Right Column: Info -->
+            <div class="lg:col-span-1 space-y-6">
                 <!-- Description Card -->
                 <div class="card-hover bg-white shadow-lg rounded-3xl p-6">
                     <h2 class="text-2xl font-bold text-indigo-600 mb-6 flex items-center">
-                        <i class="fas fa-info-circle ml-2"></i>
+                        <i class="fas fa-info-circle ml-3 text-xl"></i>
                         نبذة عن الطبيب
                     </h2>
                     <p class="text-gray-700 leading-relaxed">
@@ -232,19 +209,19 @@
                 <!-- Session Info Card -->
                 <div class="card-hover bg-white shadow-lg rounded-3xl p-6">
                     <h2 class="text-2xl font-bold text-indigo-600 mb-6 flex items-center">
-                        <i class="fas fa-clock ml-2"></i>
+                        <i class="fas fa-clock ml-3 text-xl"></i>
                         معلومات الجلسة
                     </h2>
                     <div class="space-y-4">
-                        <div class="stat-row">
+                        <div class="stat-row hover:scale-102 transition-transform">
                             <span class="text-gray-600">مدة الجلسة</span>
-                            <div class="bg-indigo-500 text-white px-4 py-2 rounded-full">
+                            <div class="bg-indigo-500 text-white px-5 py-2.5 rounded-full">
                                 {{ $doctor->session_duration }} دقيقة
                             </div>
                         </div>
-                        <div class="stat-row">
+                        <div class="stat-row hover:scale-102 transition-transform">
                             <span class="text-gray-600">وقت الراحة</span>
-                            <div class="bg-blue-500 text-white px-4 py-2 rounded-full">
+                            <div class="bg-blue-500 text-white px-5 py-2.5 rounded-full">
                                 {{ $doctor->break_duration }} دقيقة
                             </div>
                         </div>
