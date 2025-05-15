@@ -25,7 +25,7 @@ Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::post('/contact', [PageController::class, 'submitContact'])->name('contact.submit');
 
-// Doctor Auth Routes (Move these BEFORE the general doctor routes)
+// Doctor Auth Routes
 Route::middleware('guest:doctor')->group(function () {
     Route::get('/doctors/login', [DoctorAuthController::class, 'showLoginForm'])->name('doctor.login');
     Route::post('/doctors/login', [DoctorAuthController::class, 'login'])->name('doctor.login.submit');
@@ -39,7 +39,7 @@ Route::get('/doctor/registration-success', function () { return view('doctors.re
 Route::get('/doctors/{doctor}/time-slots', [DoctorController::class, 'getTimeSlots'])->name('doctors.time-slots');
 
 
-// This should come AFTER more specific routes
+
 Route::get('/doctors/{doctor}', [DoctorController::class, 'show'])->name('doctors.show');
 
 // Authenticated user routes
@@ -79,7 +79,7 @@ Route::middleware('auth:doctor')->group(function () {
         Route::put('/profile', [DoctorProfileController::class, 'update'])->name('profile.update');
         Route::put('/profile/password', [DoctorProfileController::class, 'updatePassword'])->name('profile.password.update');
 
-        // Schedule routes - Fix the naming here
+        // Schedule routes 
         Route::get('/schedule', [DoctorScheduleController::class, 'index'])->name('schedule');
         Route::post('/schedule/update', [DoctorScheduleController::class, 'update'])->name('schedule.update');
         // Appointments routes

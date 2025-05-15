@@ -9,9 +9,9 @@
                     <i class="fas fa-circle text-xs text-green-500 mr-1"></i>
                     متصل
                 </span>
-                <span class="text-gray-500">
+                {{-- <span class="text-gray-500">
                     آخر تسجيل دخول: {{ auth()->user()->last_login_at ?? 'لم يتم تسجيل الدخول' }}
-                </span>
+                </span> --}}
             </div>
         </div>
     </x-slot>
@@ -147,7 +147,7 @@
                         <i class="fas fa-calendar-check text-purple-500"></i>
                         <span class="text-sm font-medium text-gray-700">مواعيدي</span>
                     </button>
-                    
+
                     <button onclick="window.location.href='{{ route('profile.edit') }}'"
                         class="flex items-center justify-center gap-2 p-4 rounded-xl bg-green-50 hover:bg-green-100 transition-colors">
                         <i class="fas fa-user-edit text-green-500"></i>

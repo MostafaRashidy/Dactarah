@@ -3,7 +3,7 @@
 
 @section('scripts')
     <script>
-        // All previous non-map related functions remain the same (image preview, password toggle, etc.)
+
 
         // Map Implementation
         let map, marker, geocoder;
@@ -316,9 +316,9 @@
             // Validate phone format
             const phoneField = document.querySelector('input[name="phone"]');
             if (phoneField && phoneField.value) {
-                // Updated pattern for Egyptian numbers
-                const phonePattern = /^01[0-2]\d{8}$/; // This matches 01(0/1/2) followed by 8 digits
-                const phoneNumber = phoneField.value.replace(/\s/g, ''); // Remove any spaces
+                // pattern for Egyptian numbers
+                const phonePattern = /^01[0-2,5]\d{8}$/;
+                const phoneNumber = phoneField.value.replace(/\s/g, '');
 
                 if (!phonePattern.test(phoneNumber)) {
                     isValid = false;
@@ -329,7 +329,7 @@
                         errorMessage.classList.add('error-message');
                         phoneField.parentNode.insertBefore(errorMessage, phoneField.nextSibling);
                     }
-                    errorMessage.textContent = 'يجب إدخال رقم هاتف مصري صحيح يبدأ بـ 010 أو 011 أو 012';
+                    errorMessage.textContent = 'يجب إدخال رقم هاتف مصري صحيح يبدأ بـ 010 أو 011 أو 012 أو 015';
                 } else {
                     // Valid phone number
                     phoneField.classList.remove('error');
