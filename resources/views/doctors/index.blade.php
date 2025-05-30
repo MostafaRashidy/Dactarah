@@ -337,7 +337,7 @@
             <div class="relative overflow-hidden">
                 <img src="{{ $doctor->image ? asset($doctor->image) : asset('images/default-avatar.png') }}"
                      alt="{{ $doctor->full_name }}"
-                     class="w-full h-56 object-cover transition-transform duration-300
+                     class="w-full h-74 object-cover object-center transition-transform duration-300
                             group-hover:scale-110 origin-center"
                 >
 
