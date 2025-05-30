@@ -59,10 +59,16 @@ class DoctorProfileController extends Controller
         });
 
         if ($request->hasFile('image')) {
-            if ($doctor->image && Storage::exists('public/' . $doctor->image)) {
-                Storage::delete('public/' . $doctor->image);
+            // Check if the old image exists and delete it
+            if ($doctor->image && file_exists(public_path($doctor->image))) {
+                unlink(public_path($doctor->image));
             }
-            $dataToUpdate['image'] = $request->file('image')->store('doctors', 'public');
+            
+            // Store the new image consistently with DoctorController
+            $image = $request->file('image');
+            $imageName = time() . '_' . $doctor->first_name . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/uploads'), $imageName);
+            $dataToUpdate['image'] = 'images/uploads/' . $imageName;
         }
 
         $doctor->fill($dataToUpdate);

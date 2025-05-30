@@ -202,7 +202,7 @@ class DoctorController extends Controller
             'last_name' => 'required|string|max:255',
             'login_email' => 'required|email|unique:doctors,email',
             'communication_email' => 'nullable|email',
-            'phone' => 'required|regex:/^01[0-2]\d{8}$/|unique:doctors,phone,' . $doctor->id,
+            'phone' => 'required|regex:/^01[0-2,5]\d{8}$/|unique:doctors,phone,' . $doctor->id,
             'price' => 'required|numeric|min:0',
             'description' => 'required|string|max:150',
             'usr_img' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',

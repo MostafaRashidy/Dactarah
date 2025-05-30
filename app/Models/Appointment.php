@@ -21,9 +21,9 @@ class Appointment extends Model
 
     protected $casts = [
         'date' => 'date',
-        'start_time' => 'datetime',  // Add these for proper
-        'end_time' => 'datetime',    // time handling
-        'rating' => 'integer'        // Add this for rating
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+        'rating' => 'integer'
     ];
 
     public function doctor()
@@ -81,7 +81,7 @@ class Appointment extends Model
         return $this->status === 'completed' && !$this->hasRating();
     }
 
-    // Add these helper methods
+    // helper methods
     public function addRating(int $rating, ?string $review = null): void
     {
         $this->update([
@@ -89,7 +89,7 @@ class Appointment extends Model
             'review' => $review
         ]);
 
-        // Update doctor's rating
+        
         $this->updateDoctorRating();
     }
 

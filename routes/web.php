@@ -49,7 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
     Route::get('/appointments/{appointment}', [AppointmentController::class, 'show'])->name('appointments.show');
     Route::post('/appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
-    Route::get('/medical-records', [MedicalRecordController::class, 'index'])->name('medical-records.index');
+    //Route::get('/medical-records', [MedicalRecordController::class, 'index'])->name('medical-records.index');
     Route::post('/appointments/{appointment}/rate', [AppointmentController::class, 'rate'])
         ->name('appointments.rate')
         ->where('appointment', '[0-9]+');
@@ -79,7 +79,7 @@ Route::middleware('auth:doctor')->group(function () {
         Route::put('/profile', [DoctorProfileController::class, 'update'])->name('profile.update');
         Route::put('/profile/password', [DoctorProfileController::class, 'updatePassword'])->name('profile.password.update');
 
-        // Schedule routes 
+        // Schedule routes
         Route::get('/schedule', [DoctorScheduleController::class, 'index'])->name('schedule');
         Route::post('/schedule/update', [DoctorScheduleController::class, 'update'])->name('schedule.update');
         // Appointments routes
